@@ -1,10 +1,9 @@
 package baseball.repository;
 
+import baseball.util.NumbersValidator;
+
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ComputerRepository {
     private static final HashMap<Integer,List<Integer>> computers=new HashMap<>();
@@ -19,11 +18,13 @@ public class ComputerRepository {
     }
 
     public int save(List<Integer> randomNumbers) {
-
-        //검증 하고나서
-
-        computers.put(uniqueNumbers.iterator().next(), randomNumbers);
-        return uniqueNumbers.iterator().next(); // 저장 성공
+        if(NumbersValidator.isDistinct(randomNumbers)){
+            final int autoIncrementKey=computers.size();
+            computers.put(autoIncrementKey, randomNumbers);
+            return randomNumbers.iterator().next();
+        }else{
+            throw new IllegalArgumentException("");
+        }
     }
 
 }
